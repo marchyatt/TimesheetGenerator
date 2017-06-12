@@ -1,0 +1,119 @@
+@model TimesheetGenerator.Models.Timesheet
+@using TimesheetGenerator.Models.Enum
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Timesheet</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CandidateName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CandidateName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ClientName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ClientName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.JobTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.JobTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.EndDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PlacementType)
+        </dt>
+        <dd>
+            @((EPlacementType)Model.PlacementType)
+        </dd>
+    </dl>
+
+    @switch ((EPlacementType)Model.PlacementType)
+    {
+
+        case EPlacementType.Weekly:
+
+            int week = 1;
+
+            if ((int)Model.StartDate.DayOfWeek != 1)
+            {
+                <h3>Week @week</h3>
+                <p>Start: @Model.StartDate</p>
+                week++;
+            }
+            for (DateTime date = Model.StartDate; date.Date <= Model.EndDate; date = date.AddDays(1))
+            {
+                if ((int)date.DayOfWeek == 1)
+                {
+                    <h3>Week @week</h3>
+                    <p>Start: @date</p>
+                    week++;
+                }
+                if ((int)date.DayOfWeek == 0)
+                {
+                    <p>End: @date</p>
+                }
+            }
+            if ((int)Model.EndDate.DayOfWeek != 0)
+            {
+                <p>End: @Model.EndDate</p>
+            }
+
+            break;
+        case EPlacementType.Monthly:
+
+            int month = 1;
+            if ((int)Model.StartDate.Day > 1)
+            {
+                <h3>Month: @month</h3>
+                <p>Start: @Model.StartDate</p>
+                month++;
+            }
+
+            for (DateTime date = Model.StartDate; date.Date <= Model.EndDate; date = date.AddDays(1))
+            {
+                if (date.Day == 1)
+                {
+                    <h3>Month: @month</h3>
+                    <p>Start: @date</p>
+                    month++;
+                }
+                if (date.Day == System.DateTime.DaysInMonth(date.Year, date.Month))
+                {
+                    <p>End: @date</p>
+                }
+            }
+            if (Model.EndDate.Day != System.DateTime.DaysInMonth(Model.EndDate.Year, Model.EndDate.Month))
+            {
+                <p>End: @Model.EndDate</p>
+            }
+
+            break;
+    }
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,0 +1,75 @@
+@model TimesheetGenerator.Models.Timesheet
+@using TimesheetGenerator.Models.Enum
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<form asp-action="Edit">
+    <div class="form-horizontal">
+        <h4>Timesheet</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="ID" />
+        <div class="form-group">
+            <label asp-for="CandidateName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="CandidateName" class="form-control" />
+                <span asp-validation-for="CandidateName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ClientName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ClientName" class="form-control" />
+                <span asp-validation-for="ClientName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="JobTitle" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="JobTitle" class="form-control" />
+                <span asp-validation-for="JobTitle" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="EndDate" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="PlacementType" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                @*<input asp-for="PlacementType" class="form-control" />
+                <span asp-validation-for="PlacementType" class="text-danger"></span>*@
+                <select asp-for="PlacementType" asp-items="Html.GetEnumSelectList<EPlacementType>()" class="form-control">
+                    @*<option value="">--Not Specified--</option>*@
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
